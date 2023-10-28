@@ -32,6 +32,16 @@ const Home: NextPage = () => {
     ]
   }
 
+  type Position = {
+    lat: number;
+    lng: number;
+  }
+
+  type Memo = {
+    position: Position;
+    content: string;
+  }
+
   const containerStyle = {
     width: "80vh",
     height: "80vh",
@@ -42,29 +52,38 @@ const Home: NextPage = () => {
     lng: 139.77521,
   };
 
-  const [clickPosition, setClickPosition] = useState(null);
-  const [memos, setMemos] = useState([]);
+  const [clickedPosition, setClickedPosition] = useState<Position | null>(null);
+  const [memos, setMemos] = useState<Memo[]>([]);
   const [currentMemo, setCurrentMemo] = useState('');
+  const [clickedMarker, setClickedMarker] = useState<Position | null>(null);
 
-  const handleMapClick = (e) => {
-    setClickPosition({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+  const handleMapClick = (e: any) => {
+    const newPosition: Position = {
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    };
+    setClickedPosition(newPosition);
   };
 
-  const handleMemoChange = (e) => {
+  const handleMemoChange = (e: any) => {
     setCurrentMemo(e.target.value);
   };
 
   const saveMemo = () => {
-    if (clickPosition && currentMemo) {
-      const newMemo = { position: clickPosition, memo: currentMemo };
+    if (clickedPosition && currentMemo) {
+      const newMemo: Memo = {
+        position: clickedPosition,
+        content: currentMemo,
+      }
       setMemos([...memos, newMemo]);
-      setCurrentMemo('');
+      setCurrentMemo('')
+      closeInfoWindow()
       console.log('保存されたメモ:', newMemo);
     }
   };
 
   const closeInfoWindow = () => {
-    setClickPosition(null);
+    setClickedPosition(null);
   };
 
   return (
@@ -85,19 +104,36 @@ const Home: NextPage = () => {
               <Marker
                 key={index}
                 position={memo.position}
-                onClick={() => setClickPosition(memo.position)}
+                onClick={() => {
+                  setClickedMarker(memo.position)
+                  setCurrentMemo(memo.content)
+                }}
               />
             ))}
 
-            {clickPosition && (
+            {clickedPosition && (
               <InfoWindow
-                position={clickPosition}
+                position={clickedPosition}
                 onCloseClick={closeInfoWindow}
               >
                 <div>
                   <h2>メモを残す</h2>
                   <textarea value={currentMemo} onChange={handleMemoChange} />
                   <button onClick={saveMemo}>メモを保存</button>
+                </div>
+              </InfoWindow>
+            )}
+
+            {clickedMarker && (
+              <InfoWindow
+                position={clickedMarker}
+                onCloseClick={() => setClickedMarker(null)}
+              >
+                <div>
+                  <h2>メモ</h2>
+                  <p>
+                    {currentMemo}
+                  </p>
                 </div>
               </InfoWindow>
             )}
