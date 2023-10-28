@@ -1,8 +1,10 @@
+import { Button } from '@chakra-ui/react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api'
 import { NextSeo } from 'next-seo'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants'
+import Circle from 'src/pages/Circle';
 
 import type { NextPage } from 'next'
 
@@ -86,6 +88,16 @@ const Home: NextPage = () => {
     setClickedPosition(null);
   };
 
+  const [deg, setDeg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDeg(prev => prev + 30);
+    }, 100);
+    
+return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <NextSeo title={APP_NAME} description={APP_DESCRIPTION} />
@@ -139,8 +151,39 @@ const Home: NextPage = () => {
             )}
           </GoogleMap>
         </LoadScript>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+          <div style={{ position: 'relative' }}>
+
+            <Circle deg={deg} />
+
+            <Button
+              zIndex="overlay"
+              position="relative"
+              top="-70px"
+              left="30px"
+              borderRadius="50%"
+              _before={{
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: `url('botton_plas.svg')`,
+                backgroundSize: 'cover',
+                border: 'none',
+                boxShadow: 'none'
+              }}
+            >
+            </Button>
+          </div>
+
+
+        </div >
       </>
+
     </>
+
   )
 }
 
