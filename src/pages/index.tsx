@@ -8,6 +8,9 @@ import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
   const mapOptions = {
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
     styles: [
       {
         featureType: 'poi',
@@ -43,15 +46,11 @@ const Home: NextPage = () => {
   }
 
   const containerStyle = {
-    width: "80vh",
-    height: "80vh",
+    width: "100vw",
+    height: "100vh",
   };
 
-  const center = {
-    lat: 35.69575,
-    lng: 139.77521,
-  };
-
+  const [center, setCenter] = useState({ lat: 35.69575, lng: 139.77521 })
   const [clickedPosition, setClickedPosition] = useState<Position | null>(null);
   const [memos, setMemos] = useState<Memo[]>([]);
   const [currentMemo, setCurrentMemo] = useState('');
@@ -62,6 +61,7 @@ const Home: NextPage = () => {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
+    setCenter(newPosition)
     setClickedPosition(newPosition);
   };
 
