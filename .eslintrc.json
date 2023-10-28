@@ -1,0 +1,62 @@
+{
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier" // prettier とバッティングしないように
+  ],
+  "plugins": ["@typescript-eslint", "import", "react", "react-hooks", "unused-imports"],
+  "ignorePatterns": ["*.config.js"],
+  "rules": {
+    // general
+    "newline-before-return": "error",
+    "no-console": "warn",
+    "no-var": "error",
+    // @see https://zenn.dev/yoshiko/articles/0994f518015c04
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          // ここに書いた順序で間に1行空行をあけつつ整頓される
+          // fixme
+          // { "pattern": "@/lib/**", "group": "internal", "position": "before" },
+          // { "pattern": "@/components/**", "group": "internal", "position": "before" },
+
+          // styles
+          // 最後尾にしたいのでgroupをindex扱いにする
+          { "pattern": "./**.module.scss", "group": "index", "position": "before" }
+        ]
+      }
+    ],
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ],
+    "no-unused-vars": "error",
+		"unused-imports/no-unused-imports": "error",
+		"unused-imports/no-unused-vars": [
+			"warn",
+			{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+		],
+
+    // react
+    "react/react-in-jsx-scope": "off",
+    "react/display-name": "off",
+    "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prefer-stateless-function": "off",
+
+    // react-hooks
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
+  }
+}
