@@ -1,13 +1,25 @@
+import { Button } from '@chakra-ui/react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api'
 import { NextSeo } from 'next-seo'
-import { useState } from 'react'
+import { Zen_Maru_Gothic } from 'next/font/google'
+import React, { useState, useEffect } from 'react'
 
 import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants'
+import Circle from 'src/pages/Circle';
 
 import type { NextPage } from 'next'
 
+const Zenmaru = Zen_Maru_Gothic({
+  weight: '400',
+  display: 'swap',
+  preload: false
+})
+
 const Home: NextPage = () => {
   const mapOptions = {
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
     styles: [
       {
         featureType: 'poi',
@@ -32,6 +44,12 @@ const Home: NextPage = () => {
     ]
   }
 
+
+  const infoWindowStyle = {
+    width: '140px',
+    height: '140px',
+  }
+
   type Position = {
     lat: number;
     lng: number;
@@ -43,26 +61,30 @@ const Home: NextPage = () => {
   }
 
   const containerStyle = {
-    width: "80vh",
-    height: "80vh",
+    width: "100vw",
+    height: "100vh",
   };
 
-  const center = {
-    lat: 35.69575,
-    lng: 139.77521,
-  };
-
+  // eslint-disable-next-line no-unused-vars
+  const [center, setCenter] = useState({ lat: 43.068564, lng: 141.3507138 })
   const [clickedPosition, setClickedPosition] = useState<Position | null>(null);
   const [memos, setMemos] = useState<Memo[]>([]);
   const [currentMemo, setCurrentMemo] = useState('');
   const [clickedMarker, setClickedMarker] = useState<Position | null>(null);
+  const [canClick, setCanClick] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [selectAudio, setSelectAudio] = useState(false)
+  const [leaveMemo, setLeaveMemo] = useState(false)
 
   const handleMapClick = (e: any) => {
     const newPosition: Position = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
+    // ピン指したとこを真ん中にするときはこれ
+    // setCenter(newPosition)
     setClickedPosition(newPosition);
+    setSelectAudio(true);
   };
 
   const handleMemoChange = (e: any) => {
@@ -76,9 +98,10 @@ const Home: NextPage = () => {
         content: currentMemo,
       }
       setMemos([...memos, newMemo]);
+      setLeaveMemo(false)
+      setCanClick(false)
       setCurrentMemo('')
       closeInfoWindow()
-      console.log('保存されたメモ:', newMemo);
     }
   };
 
@@ -86,8 +109,20 @@ const Home: NextPage = () => {
     setClickedPosition(null);
   };
 
+  const [deg, setDeg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDeg(prev => prev + 30);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
   return (
     <>
+
       <NextSeo title={APP_NAME} description={APP_DESCRIPTION} />
       <>
         <LoadScript googleMapsApiKey="AIzaSyBvo0itSweVIrs_PFYE8iqtdUK7qv9JfUs">
@@ -100,6 +135,8 @@ const Home: NextPage = () => {
               styles: mapOptions.styles,
             }}
           >
+            <img src="logo.png" alt="" style={{ position: 'absolute', top: 20, right: -60, width: '300px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', }} />
+
             {memos.map((memo, index) => (
               <Marker
                 key={index}
@@ -112,6 +149,30 @@ const Home: NextPage = () => {
             ))}
 
             {clickedPosition && (
+              canClick && (
+                <InfoWindow
+                  position={clickedPosition}
+                  onCloseClick={closeInfoWindow}
+                >
+                  <ul>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => { setCanClick(false), setLeaveMemo(true), setCurrentMemo('') }} >
+                      <img src="kita.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>北の国から/さだまさし</p>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <img src="kiseki.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>キセキ/Greeeen</p>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <img src="beatles.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>all you need is love/Beatles</p>
+                    </li>
+                  </ul>
+                </InfoWindow>
+              )
+            )}
+
+            {leaveMemo && (
               <InfoWindow
                 position={clickedPosition}
                 onCloseClick={closeInfoWindow}
@@ -129,18 +190,60 @@ const Home: NextPage = () => {
                 position={clickedMarker}
                 onCloseClick={() => setClickedMarker(null)}
               >
-                <div>
-                  <h2>メモ</h2>
-                  <p>
-                    {currentMemo}
-                  </p>
+                <div style={infoWindowStyle}>
+                  <p>北の国から/さだまさし</p>
+                  <img
+                    src="kita.jpg"
+                    width="100px"
+                    height="100px"
+                  />
+                  <h2>{currentMemo}</h2>
                 </div>
               </InfoWindow>
             )}
+
+            {canClick && (
+              <div style={{ position: 'absolute', top: 40, left: '50%', width: '400px', height: '60px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', textAlign: 'center', lineHeight: '54px', borderRadius: '5%', border: '2px solid #582E0B' }} className={Zenmaru.className} >
+                曲を追加する場所をクリックしてください
+              </div>
+            )}
           </GoogleMap>
         </LoadScript>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+          <div style={{ position: 'absolute', bottom: 40, right: 100 }}>
+
+            <Circle deg={deg} />
+
+            <Button
+              zIndex="overlay"
+              position="relative"
+              top="-70px"
+              left="30px"
+              borderRadius="50%"
+              _before={{
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: `url('botton_plas.svg')`,
+                backgroundSize: 'cover',
+                border: 'none',
+                boxShadow: 'none'
+              }}
+              onClick={() => {
+                setCanClick(true)
+                setClickedPosition(null)
+              }}
+            >
+            </Button>
+          </div>
+        </div >
       </>
+
     </>
+
   )
 }
 
