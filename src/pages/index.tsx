@@ -35,6 +35,12 @@ const Home: NextPage = () => {
     ]
   }
 
+
+  const infoWindowStyle = {
+    width: '100px',
+    height: '100px',
+  }
+
   type Position = {
     lat: number;
     lng: number;
@@ -50,6 +56,7 @@ const Home: NextPage = () => {
     height: "100vh",
   };
 
+  // eslint-disable-next-line no-unused-vars
   const [center, setCenter] = useState({ lat: 35.69575, lng: 139.77521 })
   const [clickedPosition, setClickedPosition] = useState<Position | null>(null);
   const [memos, setMemos] = useState<Memo[]>([]);
@@ -61,7 +68,8 @@ const Home: NextPage = () => {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
-    setCenter(newPosition)
+    // ピン指したとこを真ん中にするときはこれ
+    // setCenter(newPosition)
     setClickedPosition(newPosition);
   };
 
@@ -129,7 +137,7 @@ const Home: NextPage = () => {
                 position={clickedMarker}
                 onCloseClick={() => setClickedMarker(null)}
               >
-                <div>
+                <div style={infoWindowStyle}>
                   <h2>メモ</h2>
                   <p>
                     {currentMemo}
