@@ -45,8 +45,8 @@ const Home: NextPage = () => {
   }
 
   const containerStyle = {
-    width: "80vh",
-    height: "80vh",
+    width: "100vw",
+    height: "100vh",
   };
 
   const center = {
@@ -94,12 +94,14 @@ const Home: NextPage = () => {
     const interval = setInterval(() => {
       setDeg(prev => prev + 30);
     }, 100);
-    
-return () => clearInterval(interval);
+
+    return () => clearInterval(interval);
   }, []);
+
 
   return (
     <>
+
       <NextSeo title={APP_NAME} description={APP_DESCRIPTION} />
       <>
         <LoadScript googleMapsApiKey="AIzaSyBvo0itSweVIrs_PFYE8iqtdUK7qv9JfUs">
@@ -110,6 +112,7 @@ return () => clearInterval(interval);
             onClick={handleMapClick}
             options={{
               styles: mapOptions.styles,
+              fullscreenControl: true
             }}
           >
             {memos.map((memo, index) => (
@@ -142,7 +145,13 @@ return () => clearInterval(interval);
                 onCloseClick={() => setClickedMarker(null)}
               >
                 <div>
-                  <h2>メモ</h2>
+                  <h2>
+                    <img
+                      src="circle.png"
+                      width="100px"
+                      height="100px"
+                    />
+                  </h2>
                   <p>
                     {currentMemo}
                   </p>
@@ -152,7 +161,7 @@ return () => clearInterval(interval);
           </GoogleMap>
         </LoadScript>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 650, left: 1300 }}>
 
             <Circle deg={deg} />
 
