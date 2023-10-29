@@ -9,12 +9,6 @@ import Circle from 'src/pages/Circle';
 
 import type { NextPage } from 'next'
 
-// const Zenmaru = Zen_Maru_Gothic({
-//   weight: '400',
-//   display: 'swap',
-//   preload: false
-// })
-
 const Home: NextPage = () => {
   const mapOptions = {
     mapTypeControl: false,
