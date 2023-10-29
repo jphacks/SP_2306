@@ -1,6 +1,6 @@
 # おもメロ♪
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2023/07/JPHACKS2023_ogp.png)](https://www.youtube.com/watch?v=yYRQEdfGjEg)
+[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2023/07/JPHACKS2023_ogp.png)]([https://www.youtube.com/watch?v=yYRQEdfGjEg](https://youtu.be/YI6g_QETREY))
 
 ## 製品概要
 「おもメロ♪」は誰かの特定の場所で思い出された曲を共有できるWebサイトです.
