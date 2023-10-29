@@ -1,7 +1,6 @@
 # おもメロ♪
 
-[![OMOMERO_image](![image_omo](https://github.com/jphacks/SP_2306/assets/95993731/dce70564-e54c-4e35-805d-aec5f4e51f73)
-)]([https://www.youtube.com/watch?v=yYRQEdfGjEg](https://youtu.be/YI6g_QETREY))
+[![OMOMERO_image](https://github.com/jphacks/SP_2306/assets/95993731/dce70564-e54c-4e35-805d-aec5f4e51f73)]([https://www.youtube.com/watch?v=yYRQEdfGjEg](https://youtu.be/YI6g_QETREY))
 
 ## 製品概要
 「おもメロ♪」は誰かの特定の場所で思い出された曲を共有できるWebサイトです.
