@@ -127,7 +127,7 @@ spotifyApi.clientCredentialsGrant()
       setMemos([...memos, newMemo]);
       setCurrentMemo('')
       closeInfoWindow()
-      console.log('保存メモ:', newMemo);
+      console.log('保存されたメモ:', newMemo);
     }
   };
 
