@@ -1,4 +1,5 @@
 import { Button } from '@chakra-ui/react';
+import { Zen_Maru_Gothic } from '@next/font/google'
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api'
 import { NextSeo } from 'next-seo'
 import React, { useState, useEffect } from 'react'
@@ -7,6 +8,12 @@ import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants'
 import Circle from 'src/pages/Circle';
 
 import type { NextPage } from 'next'
+
+const Zenmaru = Zen_Maru_Gothic({
+  weight: '400',
+  display: 'swap',
+  preload: false
+})
 
 const Home: NextPage = () => {
   const mapOptions = {
@@ -64,6 +71,7 @@ const Home: NextPage = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [currentMemo, setCurrentMemo] = useState('');
   const [clickedMarker, setClickedMarker] = useState<Position | null>(null);
+  const [canClick, setCanClick] = useState(false);
 
   const handleMapClick = (e: any) => {
     const newPosition: Position = {
@@ -86,6 +94,7 @@ const Home: NextPage = () => {
         content: currentMemo,
       }
       setMemos([...memos, newMemo]);
+      setCanClick(false)
       setCurrentMemo('')
       closeInfoWindow()
       console.log('保存されたメモ:', newMemo);
@@ -120,7 +129,6 @@ const Home: NextPage = () => {
             onClick={handleMapClick}
             options={{
               styles: mapOptions.styles,
-              fullscreenControl: true
             }}
           >
             {memos.map((memo, index) => (
@@ -135,16 +143,18 @@ const Home: NextPage = () => {
             ))}
 
             {clickedPosition && (
-              <InfoWindow
-                position={clickedPosition}
-                onCloseClick={closeInfoWindow}
-              >
-                <div>
-                  <h2>メモを残す</h2>
-                  <textarea value={currentMemo} onChange={handleMemoChange} />
-                  <button onClick={saveMemo}>メモを保存</button>
-                </div>
-              </InfoWindow>
+              canClick && (
+                <InfoWindow
+                  position={clickedPosition}
+                  onCloseClick={closeInfoWindow}
+                >
+                  <div>
+                    <h2>メモを残す</h2>
+                    <textarea value={currentMemo} onChange={handleMemoChange} />
+                    <button onClick={saveMemo}>メモを保存</button>
+                  </div>
+                </InfoWindow>
+              )
             )}
 
             {clickedMarker && (
@@ -161,6 +171,12 @@ const Home: NextPage = () => {
                   />
                 </div>
               </InfoWindow>
+            )}
+
+            {canClick && (
+              <div style={{ position: 'absolute', top: 40, left: '50%', width: '400px', height: '60px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', textAlign: 'center', lineHeight: '54px', borderRadius: '5%', border: '2px solid #582E0B' }} className={Zenmaru.className}>
+                曲を追加する場所をクリックしてください
+              </div>
             )}
           </GoogleMap>
         </LoadScript>
@@ -186,6 +202,10 @@ const Home: NextPage = () => {
                 backgroundSize: 'cover',
                 border: 'none',
                 boxShadow: 'none'
+              }}
+              onClick={() => {
+                setCanClick(true)
+                setClickedPosition(null)
               }}
             >
             </Button>
