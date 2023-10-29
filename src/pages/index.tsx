@@ -1,13 +1,19 @@
 import { Button } from '@chakra-ui/react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api'
 import { NextSeo } from 'next-seo'
-// import { Zen_Maru_Gothic } from 'next/font/google'
+import { Zen_Maru_Gothic } from 'next/font/google'
 import React, { useState, useEffect } from 'react'
 
 import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants'
 import Circle from 'src/pages/Circle';
 
 import type { NextPage } from 'next'
+
+const Zenmaru = Zen_Maru_Gothic({
+  weight: '400',
+  display: 'swap',
+  preload: false
+})
 
 const Home: NextPage = () => {
   const mapOptions = {
@@ -195,7 +201,7 @@ const Home: NextPage = () => {
             )}
 
             {canClick && (
-              <div style={{ position: 'absolute', top: 40, left: '50%', width: '400px', height: '60px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', textAlign: 'center', lineHeight: '54px', borderRadius: '5%', border: '2px solid #582E0B' }} >
+              <div style={{ position: 'absolute', top: 40, left: '50%', width: '400px', height: '60px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', textAlign: 'center', lineHeight: '54px', borderRadius: '5%', border: '2px solid #582E0B' }} className={Zenmaru.className} >
                 曲を追加する場所をクリックしてください
               </div>
             )}
