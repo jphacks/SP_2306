@@ -39,8 +39,8 @@ const Home: NextPage = () => {
 
 
   const infoWindowStyle = {
-    width: '100px',
-    height: '100px',
+    width: '140px',
+    height: '140px',
   }
 
   type Position = {
@@ -153,22 +153,19 @@ const Home: NextPage = () => {
                 onCloseClick={() => setClickedMarker(null)}
               >
                 <div style={infoWindowStyle}>
-                  <h2>メモ</h2>
-                    <img
-                      src="circle.png"
-                      width="100px"
-                      height="100px"
-                    />
-                  <p>
-                    {currentMemo}
-                  </p>
+                  <h2>{currentMemo}</h2>
+                  <img
+                    src="circle.png"
+                    width="100px"
+                    height="100px"
+                  />
                 </div>
               </InfoWindow>
             )}
           </GoogleMap>
         </LoadScript>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-          <div style={{ position: 'absolute', top: 650, left: 1300 }}>
+          <div style={{ position: 'absolute', bottom: 40, left: 1300 }}>
 
             <Circle deg={deg} />
 
@@ -193,8 +190,6 @@ const Home: NextPage = () => {
             >
             </Button>
           </div>
-
-
         </div >
       </>
 
