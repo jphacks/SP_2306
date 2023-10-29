@@ -24,37 +24,37 @@ const Home: NextPage = () => {
   });
 
   // アクセストークンを取得
-spotifyApi.clientCredentialsGrant()
-.then(data => {
-  spotifyApi.setAccessToken(data.body.access_token);
+  spotifyApi.clientCredentialsGrant()
+  .then(data => {
+    spotifyApi.setAccessToken(data.body.access_token);
 
-  // 曲を検索
-  const searchKeyword = 'Your Search Query';
+    // 曲を検索
+    const searchKeyword = 'Your Search Query';
 
-  spotifyApi.searchTracks(searchKeyword)
-    .then(data => {
-      if (data.body && data.body.tracks && data.body.tracks.items) {
-        const tracks = data.body.tracks.items;
+    spotifyApi.searchTracks(searchKeyword)
+      .then(data => {
+        if (data.body && data.body.tracks && data.body.tracks.items) {
+          const tracks = data.body.tracks.items;
 
-        if (tracks.length > 0) {
-          console.log('検索結果:');
-          tracks.forEach((track, index) => {
-            console.log(`${index + 1}. ${track.name} by ${track.artists[0].name}`);
-          });
+          if (tracks.length > 0) {
+            console.log('検索結果:');
+            tracks.forEach((track, index) => {
+              console.log(`${index + 1}. ${track.name} by ${track.artists[0].name}`);
+            });
+          } else {
+            console.log('検索結果がありません。');
+          }
         } else {
           console.log('検索結果がありません。');
         }
-      } else {
-        console.log('検索結果がありません。');
-      }
-    })
-    .catch(error => {
-      console.error('曲の検索エラー:', error);
-    });
-})
-.catch(error => {
-  console.error('アクセストークンの取得エラー:', error);
-});
+      })
+      .catch(error => {
+        console.error('曲の検索エラー:', error);
+      });
+  })
+  .catch(error => {
+    console.error('アクセストークンの取得エラー:', error);
+  });
 
   const mapOptions = {
     styles: [
@@ -127,7 +127,7 @@ spotifyApi.clientCredentialsGrant()
       setMemos([...memos, newMemo]);
       setCurrentMemo('')
       closeInfoWindow()
-      console.log('保存されたメモ:', newMemo);
+      //console.log('保存されたメモ:', newMemo);
     }
   };
 
@@ -188,6 +188,10 @@ spotifyApi.clientCredentialsGrant()
             )}
           </GoogleMap>
         </LoadScript>
+
+        <Button colorScheme="teal">
+          クリック
+        </Button>
       </>
     </>
   )
