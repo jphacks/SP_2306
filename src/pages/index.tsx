@@ -60,12 +60,15 @@ const Home: NextPage = () => {
   };
 
   // eslint-disable-next-line no-unused-vars
-  const [center, setCenter] = useState({ lat: 35.69575, lng: 139.77521 })
+  const [center, setCenter] = useState({ lat: 43.068564, lng: 141.3507138 })
   const [clickedPosition, setClickedPosition] = useState<Position | null>(null);
   const [memos, setMemos] = useState<Memo[]>([]);
   const [currentMemo, setCurrentMemo] = useState('');
   const [clickedMarker, setClickedMarker] = useState<Position | null>(null);
   const [canClick, setCanClick] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [selectAudio, setSelectAudio] = useState(false)
+  const [leaveMemo, setLeaveMemo] = useState(false)
 
   const handleMapClick = (e: any) => {
     const newPosition: Position = {
@@ -75,6 +78,7 @@ const Home: NextPage = () => {
     // ピン指したとこを真ん中にするときはこれ
     // setCenter(newPosition)
     setClickedPosition(newPosition);
+    setSelectAudio(true);
   };
 
   const handleMemoChange = (e: any) => {
@@ -88,10 +92,10 @@ const Home: NextPage = () => {
         content: currentMemo,
       }
       setMemos([...memos, newMemo]);
+      setLeaveMemo(false)
       setCanClick(false)
       setCurrentMemo('')
       closeInfoWindow()
-      console.log('保存されたメモ:', newMemo);
     }
   };
 
@@ -142,13 +146,35 @@ const Home: NextPage = () => {
                   position={clickedPosition}
                   onCloseClick={closeInfoWindow}
                 >
-                  <div>
-                    <h2>メモを残す</h2>
-                    <textarea value={currentMemo} onChange={handleMemoChange} />
-                    <button onClick={saveMemo}>メモを保存</button>
-                  </div>
+                  <ul>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => { setCanClick(false), setLeaveMemo(true), setCurrentMemo('') }} >
+                      <img src="kita.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>北の国から/さだまさし</p>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <img src="kiseki.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>キセキ/Greeeen</p>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <img src="beatles.jpg" alt="" style={{ width: '100px', marginRight: '10px' }} />
+                      <p>all you need is love/Beatles</p>
+                    </li>
+                  </ul>
                 </InfoWindow>
               )
+            )}
+
+            {leaveMemo && (
+              <InfoWindow
+                position={clickedPosition}
+                onCloseClick={closeInfoWindow}
+              >
+                <div>
+                  <h2>メモを残す</h2>
+                  <textarea value={currentMemo} onChange={handleMemoChange} />
+                  <button onClick={saveMemo}>メモを保存</button>
+                </div>
+              </InfoWindow>
             )}
 
             {clickedMarker && (
@@ -157,12 +183,13 @@ const Home: NextPage = () => {
                 onCloseClick={() => setClickedMarker(null)}
               >
                 <div style={infoWindowStyle}>
-                  <h2>{currentMemo}</h2>
+                  <p>北の国から/さだまさし</p>
                   <img
-                    src="circle.png"
+                    src="kita.jpg"
                     width="100px"
                     height="100px"
                   />
+                  <h2>{currentMemo}</h2>
                 </div>
               </InfoWindow>
             )}
