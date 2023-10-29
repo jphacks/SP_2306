@@ -135,6 +135,8 @@ const Home: NextPage = () => {
               styles: mapOptions.styles,
             }}
           >
+            <img src="logo.png" alt="" style={{ position: 'absolute', top: 20, right: -60, width: '300px', backgroundColor: '#FFF5DC', transform: 'translateX(-50%)', }} />
+
             {memos.map((memo, index) => (
               <Marker
                 key={index}
@@ -208,7 +210,7 @@ const Home: NextPage = () => {
           </GoogleMap>
         </LoadScript>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-          <div style={{ position: 'absolute', bottom: 40, left: 1300 }}>
+          <div style={{ position: 'absolute', bottom: 40, right: 100 }}>
 
             <Circle deg={deg} />
 
