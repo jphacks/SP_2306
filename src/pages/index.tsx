@@ -125,7 +125,7 @@ const Home: NextPage = () => {
 
       <NextSeo title={APP_NAME} description={APP_DESCRIPTION} />
       <>
-        <LoadScript googleMapsApiKey="AIzaSyBvo0itSweVIrs_PFYE8iqtdUK7qv9JfUs">
+        <LoadScript googleMapsApiKey="API_KEY">
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
